@@ -41,6 +41,7 @@ function App() {
   };
 
   const updateEmployeeWage = (id) => {
+    console.log('updateEmployeeWage: ' + id);
     Axios.put("http://localhost:3001/update", { wage: newWage, id: id }).then(
       (response) => {
         setEmployeeList(
