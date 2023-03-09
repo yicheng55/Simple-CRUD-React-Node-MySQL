@@ -49,11 +49,11 @@ INSERT INTO `department` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `employee`
+-- 資料表結構 `employees`
 --
 
-DROP TABLE IF EXISTS `employee`;
-CREATE TABLE `employee` (
+DROP TABLE IF EXISTS `employees`;
+CREATE TABLE `employees` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
   `department` int(11) DEFAULT NULL,
@@ -61,12 +61,20 @@ CREATE TABLE `employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- 傾印資料表的資料 `employee`
+-- 傾印資料表的資料 `employees`
 --
 
-INSERT INTO `employee` (`id`, `name`, `department`, `address`) VALUES
+INSERT INTO `employees` (`id`, `name`, `department`, `address`) VALUES
 (1, 'test001', 1, 'test111'),
-(2, 'test001', 1, 'test111');
+(2, 'test001', 1, 'test111'),
+(3, 'user002', 3, 'user002'),
+(4, 'user002', 3, 'user002'),
+(5, 'eeeee', 2, 'eeeee'),
+(6, 'dddd', 3, 'dddd'),
+(7, 'sssssssss', 4, 'ssssssss'),
+(8, 'ggg', 4, 'gggdddddd'),
+(9, 'gggg', 4, 'ggggggggg'),
+(10, 'ggggg', 1, 'gggggggggg');
 
 --
 -- 已傾印資料表的索引
@@ -79,9 +87,9 @@ ALTER TABLE `department`
   ADD PRIMARY KEY (`id`);
 
 --
--- 資料表索引 `employee`
+-- 資料表索引 `employees`
 --
-ALTER TABLE `employee`
+ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`),
   ADD KEY `department_idx` (`department`);
 
@@ -96,19 +104,19 @@ ALTER TABLE `department`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `employee`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `employees`
 --
-ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- 已傾印資料表的限制式
 --
 
 --
--- 資料表的限制式 `employee`
+-- 資料表的限制式 `employees`
 --
-ALTER TABLE `employee`
+ALTER TABLE `employees`
   ADD CONSTRAINT `department` FOREIGN KEY (`department`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
