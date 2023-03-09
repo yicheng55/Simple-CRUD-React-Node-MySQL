@@ -71,7 +71,7 @@ function App() {
 
   const updateAddress = (id) => {
     const data = employees.find((item) => item.id === id);
-    axios.put(`http://localhost:8001/${id}`, data).then((response) => {
+    axios.put(`http://localhost:3001/update`, data).then((response) => {
       AppToaster.show({
         message: "Data updated successfully",
         intent: "success",
@@ -81,7 +81,7 @@ function App() {
   };
 
   const deleteEmployee = (id) => {
-    axios.delete(`http://localhost:8001/${id}`).then((response) => {
+    axios.delete(`http://localhost:3001/${id}`).then((response) => {
       setEmployees((values) => {
         return values.filter((item) => item.id !== id);
       });
