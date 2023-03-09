@@ -39,6 +39,8 @@ app.get("/employees", (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      console.log(result);
+      // res.json(result);
       res.send(result);
     }
   });
@@ -66,6 +68,7 @@ app.delete("/delete/:id", (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      console.log(result);
       res.send(result);
     }
   });

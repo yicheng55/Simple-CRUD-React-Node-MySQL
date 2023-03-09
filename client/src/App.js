@@ -41,12 +41,15 @@ function App() {
   };
 
   const updateEmployeeWage = (id) => {
-    console.log('updateEmployeeWage: ' + id);
+    console.log('updateEmployee.id: ' + id);
     Axios.put("http://localhost:3001/update", { wage: newWage, id: id }).then(
       (response) => {
+        console.log(`response: `);
+        console.log(response.data);
+
         setEmployeeList(
           employeeList.map((val) => {
-            return val.id == id
+            return val.id === id
               ? {
                   id: val.id,
                   name: val.name,
@@ -66,7 +69,7 @@ function App() {
     Axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
       setEmployeeList(
         employeeList.filter((val) => {
-          return val.id != id;
+          return val.id !== id;
         })
       );
     });
