@@ -46,13 +46,11 @@ function App() {
         })
         .then((response) => {
           const { data } = response;
-          setEmployees([...employees,
-          {
-            name: name,
-            department: department,
-            address: address,
-          },
-          ]);
+          // console.log(response.data);
+          // console.log(JSON.parse(JSON.stringify(data)));
+          // let data1 = JSON.parse(JSON.stringify(data));
+          console.log(data);
+          setEmployees([...employees, data]);
           setNewName("");
           setNewAddress("");
           setNewDepartment("");

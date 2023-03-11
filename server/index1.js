@@ -7,10 +7,13 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  user: "root",
   host: "localhost",
+  user: "root",
   // EX38-windows
-  password: "12345678",
+  // password: "12345678",
+
+  // Home pc
+  password: "",
   database: "codingdeft",
   // database: "employeeSystem",
 });
@@ -29,7 +32,18 @@ app.post("/create", (req, res) => {
         if (err) {
           console.log(err);
         } else {
-          res.send("Values Inserted");
+          // console.log(result.insertId);
+          // res.send("Values Inserted");
+          // 查詢新增資料
+          db.query("SELECT *  FROM employees WHERE id = ?", result.insertId, (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(result[0]);
+              res.send(result[0]);
+            }
+          });
+
         }
       }
     );
@@ -71,7 +85,7 @@ app.get("/employees", (req, res) => {
 
 
 app.get("/department", (req, res) => {
-    //   console.log(req);
+      console.log(req);
       db.query("SELECT * FROM department", (err, result) => {
         if (err) {
           console.log(err);
@@ -82,6 +96,20 @@ app.get("/department", (req, res) => {
         }
       });
     });
+
+
+app.get("/:id", (req, res) => {
+  const id = req.params.id;
+  db.query("SELECT *  FROM employees WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
+
 
 app.put("/update", (req, res) => {
   console.log(req.body);
@@ -100,7 +128,8 @@ app.put("/update", (req, res) => {
   );
 });
 
-app.delete("/delete/:id", (req, res) => {
+
+app.delete("/:id", (req, res) => {
   const id = req.params.id;
   db.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
     if (err) {
