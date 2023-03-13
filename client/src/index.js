@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 // import App from "./App";
-// import App from "./transaction";
-import App from "./App1";
+import App from "./transaction";
+// import App from "./App1";
 import "./index1.css";
 
 import reportWebVitals from "./reportWebVitals";
@@ -10,6 +10,7 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* <Transaction /> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

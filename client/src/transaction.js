@@ -5,175 +5,186 @@ import {
   Toaster,
   Position,
 } from "@blueprintjs/core";
-import "./App.css";
-import { useState } from "react";
-import Axios from "axios";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const AppToaster = Toaster.create({
+  position: Position.TOP,
+});
 
 function App() {
-  const [USER_ID, setUSER_ID] = useState(1);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState(0);
-  const [country, setCountry] = useState("");
-  const [position, setPosition] = useState("");
-  const [wage, setWage] = useState(0);
+  const [employees, setEmployees] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [newName, setNewName] = useState("");
+  const [newDepartment, setNewDepartment] = useState("");
+  const [newAddress, setNewAddress] = useState("");
 
-  const [newWage, setNewWage] = useState(0);
+  console.log( __filename );
+  useEffect(() => {
+    axios.get("http://localhost:3001/catalog/transaction").then((response) => {
+      const { data } = response;
+      // console.log(data.data);
 
-  const [employeeList, setEmployeeList] = useState([]);
-  console.log(`transaction: `);
+      let resoult = data.data.map(function(list, index, array){
+        // console.log(list);
+        return {id: list.ID, name: list.USER_ID, department: list.ITEM_ID, address: list.TYPE};
+      });
+      console.log(resoult);
+      setEmployees(resoult);
+    });
+
+    axios.get("http://localhost:3001/catalog/location").then((response) => {
+      const { data } = response;
+      console.log(data.data);
+      // setDepartments(data);
+    });
+  }, []);
 
   const addEmployee = () => {
-    Axios.post("http://localhost:3001/create", {
-      name: name,
-      age: age,
-      country: country,
-      position: position,
-      wage: wage,
-    }).then(() => {
-      setEmployeeList([
-        ...employeeList,
-        {
-          name: name,
-          age: age,
-          country: country,
-          position: position,
-          wage: wage,
-        },
-      ]);
+    const name = newName.trim();
+    const department = newDepartment;
+    const address = newAddress.trim();
+    if (name && department && address) {
+      axios
+        .post("http://localhost:3001/create", {
+          name,
+          department,
+          address,
+        })
+        .then((response) => {
+          const { data } = response;
+          // console.log(response.data);
+          // console.log(JSON.parse(JSON.stringify(data)));
+          // let data1 = JSON.parse(JSON.stringify(data));
+          console.log(data);
+          setEmployees([...employees, data]);
+          setNewName("");
+          setNewAddress("");
+          setNewDepartment("");
+        });
+    }
+  };
+
+  const onChangeHandler = (id, key, value) => {
+    console.log({ id, key, value });
+    setEmployees((values) => {
+      return values.map((item) =>
+        item.id === id ? { ...item, [key]: value } : item
+      );
     });
   };
 
-  const getEmployees = () => {
-    Axios.get("http://localhost:3001/employees").then((response) => {
-      setEmployeeList(response.data);
+  const updateAddress = (id) => {
+    const data = employees.find((item) => item.id === id);
+    axios.put(`http://localhost:3001/update`, data).then((response) => {
+      AppToaster.show({
+        message: "Data updated successfully",
+        intent: "success",
+        timeout: 3000,
+      });
     });
-  };
-
-  const updateEmployeeWage = (id) => {
-    console.log('updateEmployee.id: ' + id);
-    Axios.put("http://localhost:3001/update", { wage: newWage, id: id }).then(
-      (response) => {
-        console.log(`response: `);
-        console.log(response.data);
-
-        setEmployeeList(
-          employeeList.map((val) => {
-            return val.id === id
-              ? {
-                  id: val.id,
-                  name: val.name,
-                  country: val.country,
-                  age: val.age,
-                  position: val.position,
-                  wage: newWage,
-                }
-              : val;
-          })
-        );
-      }
-    );
   };
 
   const deleteEmployee = (id) => {
-    Axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
-      setEmployeeList(
-        employeeList.filter((val) => {
-          return val.id !== id;
-        })
-      );
+    axios.delete(`http://localhost:3001/${id}`).then((response) => {
+      setEmployees((values) => {
+        return values.filter((item) => item.id !== id);
+      });
+
+      AppToaster.show({
+        message: "Employee deleted successfully",
+        intent: "success",
+        timeout: 3000,
+      });
     });
   };
 
   return (
     <div className="App">
-        <div className="information">
-        <label>USER_ID:</label>
-        <input
-        type="number"
-        onChange={(event) => {
-          setUSER_ID(event.target.value);
-        }}
-      />
-        <label>Name:</label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-        />
-        <label>Age:</label>
-        <input
-          type="number"
-          onChange={(event) => {
-            setAge(event.target.value);
-          }}
-        />
-        <label>Country:</label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setCountry(event.target.value);
-          }}
-        />
-        <label>Position:</label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setPosition(event.target.value);
-          }}
-        />
-        <label>Wage (year):</label>
-        <input
-          type="number"
-          onChange={(event) => {
-            setWage(event.target.value);
-          }}
-        />
-        <button onClick={addEmployee}>Add Employee</button>
-      </div>
-      <div className="employees">
-        <button onClick={getEmployees}>Show Employees</button>
-
-        {employeeList.map((val, key) => {
-          return (
-            <div className="employee">
-              <div>
-                <h3>ID: {val.id}</h3>
-                <h3>Name: {val.name}</h3>
-                <h3>Age: {val.age}</h3>
-                <h3>Country: {val.country}</h3>
-                <h3>Position: {val.position}</h3>
-                <h3>Wage: {val.wage}</h3>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="2000..."
-                  onChange={(event) => {
-                    setNewWage(event.target.value);
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    updateEmployeeWage(val.id);
-                  }}
+      <table className="bp4-html-table .modifier">
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {employees.map((employee) => {
+            const { id, name, address, department } = employee;
+            console.log(employee);
+            return (
+              <tr key={id}>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{department}</td>
+                <td>
+                  <EditableText
+                    value={address}
+                    onChange={(value) => onChangeHandler(id, "address", value)}
+                  />
+                </td>
+                <td>
+                  <Button intent="primary" onClick={() => updateAddress(id)}>
+                    Update
+                  </Button>
+                  &nbsp;
+                  <Button intent="danger" onClick={() => deleteEmployee(id)}>
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td>
+              <InputGroup
+                placeholder="Add name here..."
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <div className="bp4-html-select .modifier">
+                <select
+                  onChange={(e) => setNewDepartment(e.target.value)}
+                  value={newDepartment}
                 >
-                  {" "}
-                  Update
-                </button>
-
-                <button
-                  onClick={() => {
-                    deleteEmployee(val.id);
-                  }}
-                >
-                  Delete
-                </button>
+                  <option selected value="">
+                    Select department
+                  </option>
+                  {departments.map((department) => {
+                    const { id, name } = department;
+                    return (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <span className="bp4-icon bp4-icon-double-caret-vertical"></span>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Add address here..."
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+              />
+            </td>
+            <td>
+              <Button intent="success" onClick={addEmployee}>
+                Add Employee
+              </Button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   );
 }
