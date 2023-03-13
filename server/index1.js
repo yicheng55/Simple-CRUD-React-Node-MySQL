@@ -10,10 +10,10 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   // EX38-windows
-  // password: "12345678",
+  password: "12345678",
 
   // Home pc
-  password: "",
+  // password: "",
   database: "codingdeft",
   // database: "employeeSystem",
 });
