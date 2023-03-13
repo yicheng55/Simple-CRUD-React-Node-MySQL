@@ -160,7 +160,7 @@ function App() {
                   onChange={(e) => setNewDepartment(e.target.value)}
                   value={newDepartment}
                 >
-                  <option selected value="">
+                  <option defaultValue ="none">
                     Select department
                   </option>
                   {departments.map((department) => {
