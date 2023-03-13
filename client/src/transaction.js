@@ -35,8 +35,13 @@ function App() {
 
     axios.get("http://localhost:3001/catalog/location").then((response) => {
       const { data } = response;
-      console.log(data.data);
-      // setDepartments(data);
+      // console.log(data.data);
+      let resoult = data.data.map(function(list, index, array){
+        // console.log(list);
+        return {id: list.ID, name: list.NAME};
+      });
+      console.log(resoult);
+      setDepartments(resoult);
     });
   }, []);
 
@@ -114,7 +119,7 @@ function App() {
         <tbody>
           {employees.map((employee) => {
             const { id, name, address, department } = employee;
-            console.log(employee);
+            {/* console.log(employee); */}
             return (
               <tr key={id}>
                 <td>{id}</td>
