@@ -147,7 +147,7 @@ function App() {
           {employees.map((employee) => {
             // 抓取所需顯示欄位
             const { ID, USER_ID, ITEM_ID, TYPE, LOCATION_ID, TAG_ID, QUANTITY, DEVICE_ID, PHYSICAL_PORT, COMMENT } = employee;
-            console.log(employee);
+            // console.log(employee);
             // 儲位代號id轉為儲位名稱顯示.
             let Location = locations.filter(function(elem, index, arr) {
               return elem.ID === LOCATION_ID;
@@ -189,7 +189,21 @@ function App() {
             <td></td>
             <td>
               <InputGroup
-                placeholder="Add name here..."
+                placeholder="User"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Item"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Type"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
               />
@@ -219,7 +233,35 @@ function App() {
             </td>
             <td>
               <InputGroup
-                placeholder="Add address here..."
+                placeholder="Tag"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Quantity"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Device"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Physical"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </td>
+            <td>
+              <InputGroup
+                placeholder="Comment"
                 value={newAddress}
                 onChange={(e) => setNewAddress(e.target.value)}
               />
