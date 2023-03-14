@@ -90,14 +90,19 @@ function App() {
     console.log({ id, key, value });
     setEmployees((values) => {
       return values.map((item) =>
-        item.id === id ? { ...item, [key]: value } : item
+        // 注意大小寫有差異與employee.ID相同
+        item.ID === id ? { ...item, [key]: value } : item
+
+        // 此為錯誤關閉
+        // item.id === id ? { ...item, [key]: value } : item
       );
     });
   };
 
   const updateAddress = (id) => {
-    const data = employees.find((item) => item.id === id);
-    axios.put(`http://localhost:3001/update`, data).then((response) => {
+    const data = employees.find((item) => item.ID === id);
+    console.log(data);
+    axios.put(`http://localhost:3001/catalog/transaction/${id}`, data).then((response) => {
       AppToaster.show({
         message: "Data updated successfully",
         intent: "success",
@@ -142,12 +147,13 @@ function App() {
           {employees.map((employee) => {
             // 抓取所需顯示欄位
             const { ID, USER_ID, ITEM_ID, TYPE, LOCATION_ID, TAG_ID, QUANTITY, DEVICE_ID, PHYSICAL_PORT, COMMENT } = employee;
+            console.log(employee);
             // 儲位代號id轉為儲位名稱顯示.
             let Location = locations.filter(function(elem, index, arr) {
               return elem.ID === LOCATION_ID;
             });
             // console.log(location);
-            console.log(Location);
+            // console.log(Location);
             return (
               <tr key={ID}>
                 <td>{ID}</td>
