@@ -21,19 +21,9 @@ function App() {
 
   console.log( __filename );
   useEffect(() => {
-    axios.get("http://localhost:3001/catalog/transaction").then((response) => {
-      const { data } = response;
-      // console.log(data.data);
-
-      let resoult = data.data.map(function(list, index, array){
-        // console.log(list);
-        return {id: list.ID, name: list.USER_ID, department: list.ITEM_ID, address: list.TYPE};
-      });
-      console.log(resoult);
-      setEmployees(resoult);
-    });
-
-    axios.get("http://localhost:3001/catalog/location").then((response) => {
+    let url = "http://localhost:3001/catalog/location";
+    axios.get(url)
+    .then((response) => {
       const { data } = response;
       // console.log(data.data);
       let resoult = data.data.map(function(list, index, array){
@@ -42,7 +32,28 @@ function App() {
       });
       console.log(resoult);
       setDepartments(resoult);
+    })
+    .catch((error) => {
+      console.error("Error", error);
     });
+
+    // axios.get("http://localhost:3001/catalog/transaction")
+    url = "http://localhost:3001/catalog/transaction";
+    axios.get(url)
+    .then((response) => {
+      const { data } = response;
+      // console.log(data.data);
+      let resoult = data.data.map(function(list, index, array){
+        // console.log(list);
+        return {id: list.ID, name: list.USER_ID, department: list.ITEM_ID, address: list.TYPE};
+      });
+      console.log(resoult);
+      setEmployees(resoult);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
+
   }, []);
 
   const addEmployee = () => {
@@ -109,8 +120,8 @@ function App() {
       <table className="bp4-html-table .modifier">
         <thead>
           <tr>
-            <th>Employee ID</th>
-            <th>Name</th>
+            <th>ID</th>
+            <th>User</th>
             <th>Department</th>
             <th>Address</th>
             <th>Action</th>
@@ -119,12 +130,17 @@ function App() {
         <tbody>
           {employees.map((employee) => {
             const { id, name, address, department } = employee;
-            {/* console.log(employee); */}
+            // 部門代號id轉為部門名稱顯示.
+            let filtered = departments.filter(function(elem, index, arr) {
+              return elem.id === department;
+            });
+            // console.log(department);
+            console.log(filtered);
             return (
               <tr key={id}>
                 <td>{id}</td>
                 <td>{name}</td>
-                <td>{department}</td>
+                <td>{filtered[0].name}</td>
                 <td>
                   <EditableText
                     value={address}
