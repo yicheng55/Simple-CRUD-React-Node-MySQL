@@ -162,7 +162,7 @@ function App() {
                 <td>
                   <EditableText
                     value={COMMENT}
-                    onChange={(value) => onChangeHandler(ID, "address", value)}
+                    onChange={(value) => onChangeHandler(ID, "COMMENT", value)}
                   />
                 </td>
                 <td>
