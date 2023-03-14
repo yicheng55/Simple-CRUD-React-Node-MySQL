@@ -20,17 +20,18 @@ function App() {
   const [newAddress, setNewAddress] = useState("");
 
   useEffect(() => {
+    axios.get("http://localhost:3001/department").then((response) => {
+      const { data } = response;
+      console.log(data);
+      setDepartments(data);
+    });
+
     axios.get("http://localhost:3001/employees").then((response) => {
       const { data } = response;
       console.log(data);
       setEmployees(data);
     });
 
-    axios.get("http://localhost:3001/department").then((response) => {
-      const { data } = response;
-      console.log(data);
-      setDepartments(data);
-    });
   }, []);
 
   const addEmployee = () => {
@@ -108,11 +109,23 @@ function App() {
           {employees.map((employee) => {
             const { id, name, address, department } = employee;
             console.log(employee);
+
+            // 部門代號id轉為部門名稱顯示.
+            let filtered = departments.filter(function(elem, index, arr) {
+              return elem.id === department;
+            });
+            // console.log(department);
+            console.log(filtered);
+
+            // // 部門代號id轉為部門名稱顯示.
+            // const department_name = departments[department-1] ;
+            // // console.log(department_name);
+            // console.log(department_name.name);
             return (
               <tr key={id}>
                 <td>{id}</td>
                 <td>{name}</td>
-                <td>{department}</td>
+                <td>{filtered[0].name}</td>
                 <td>
                   <EditableText
                     value={address}
