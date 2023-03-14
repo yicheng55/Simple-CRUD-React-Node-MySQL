@@ -29,7 +29,9 @@ function App() {
       // console.log(data.data);
       let resoult = data.data.map(function(list, index, array){
         // console.log(list);
-        return {id: list.ID, name: list.NAME};
+        return list;
+        // 依據UI需要轉換欄位名稱
+        // return {id: list.ID, name: list.NAME};
       });
       console.log(resoult);
       setLocations(resoult);
@@ -46,7 +48,9 @@ function App() {
       // console.log(data.data);
       let resoult = data.data.map(function(list, index, array){
         // console.log(list);
-        return {id: list.ID, name: list.USER_ID, location: list.LOCATION_ID, type: list.TYPE};
+        return list;
+        // 依據UI需要轉換欄位名稱
+        // return {id: list.ID, name: list.USER_ID, location: list.LOCATION_ID, type: list.TYPE};
       });
       console.log(resoult);
       setEmployees(resoult);
@@ -136,36 +140,37 @@ function App() {
         </thead>
         <tbody>
           {employees.map((employee) => {
-            const { id, name, type, location } = employee;
-            // 部門代號id轉為部門名稱顯示.
-            let filtered = locations.filter(function(elem, index, arr) {
-              return elem.id === location;
+            // 抓取所需顯示欄位
+            const { ID, USER_ID, ITEM_ID, TYPE, LOCATION_ID, TAG_ID, QUANTITY, DEVICE_ID, PHYSICAL_PORT, COMMENT } = employee;
+            // 儲位代號id轉為儲位名稱顯示.
+            let Location = locations.filter(function(elem, index, arr) {
+              return elem.ID === LOCATION_ID;
             });
             // console.log(location);
-            console.log(filtered);
+            console.log(Location);
             return (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>{name}</td>
-                <td>{name}</td>
-                <td>{filtered[0].name}</td>
-                <td>{name}</td>
-                <td>{name}</td>
-                <td>{name}</td>
-                <td>{name}</td>
+              <tr key={ID}>
+                <td>{ID}</td>
+                <td>{USER_ID}</td>
+                <td>{ITEM_ID}</td>
+                <td>{TYPE}</td>
+                <td>{Location[0].NAME}</td>
+                <td>{TAG_ID}</td>
+                <td>{QUANTITY}</td>
+                <td>{DEVICE_ID}</td>
+                <td>{PHYSICAL_PORT}</td>
                 <td>
                   <EditableText
-                    value={type}
-                    onChange={(value) => onChangeHandler(id, "address", value)}
+                    value={COMMENT}
+                    onChange={(value) => onChangeHandler(ID, "address", value)}
                   />
                 </td>
                 <td>
-                  <Button intent="primary" onClick={() => updateAddress(id)}>
+                  <Button intent="primary" onClick={() => updateAddress(ID)}>
                     Update
                   </Button>
                   &nbsp;
-                  <Button intent="danger" onClick={() => deleteEmployee(id)}>
+                  <Button intent="danger" onClick={() => deleteEmployee(ID)}>
                     Delete
                   </Button>
                 </td>
@@ -192,11 +197,13 @@ function App() {
                   <option defaultValue ="none">
                     Select department
                   </option>
-                  {departments.map((department) => {
-                    const { id, name } = department;
+                  {locations.map((location) => {
+
+                    // 抓取所需顯示欄位
+                    const { ID, NAME } = location;
                     return (
-                      <option key={id} value={id}>
-                        {name}
+                      <option key={ID} value={ID}>
+                        {NAME}
                       </option>
                     );
                   })}
