@@ -123,8 +123,14 @@ function App() {
           <tr>
             <th>ID</th>
             <th>User</th>
-            <th>Location</th>
+            <th>Item</th>
             <th>Type</th>
+            <th>Location</th>
+            <th>Tag</th>
+            <th>Quantity</th>
+            <th>Device</th>
+            <th>Physical</th>
+            <th>Comment</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -141,7 +147,13 @@ function App() {
               <tr key={id}>
                 <td>{id}</td>
                 <td>{name}</td>
+                <td>{name}</td>
+                <td>{name}</td>
                 <td>{filtered[0].name}</td>
+                <td>{name}</td>
+                <td>{name}</td>
+                <td>{name}</td>
+                <td>{name}</td>
                 <td>
                   <EditableText
                     value={type}
