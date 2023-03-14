@@ -112,9 +112,9 @@ function App() {
   };
 
   const deleteEmployee = (id) => {
-    axios.delete(`http://localhost:3001/${id}`).then((response) => {
+    axios.delete(`http://localhost:3001/catalog/transaction/${id}`).then((response) => {
       setEmployees((values) => {
-        return values.filter((item) => item.id !== id);
+        return values.filter((item) => item.ID !== id);
       });
 
       AppToaster.show({
@@ -226,7 +226,7 @@ function App() {
             </td>
             <td>
               <Button intent="success" onClick={addEmployee}>
-                Add Employee
+                Add
               </Button>
             </td>
           </tr>
