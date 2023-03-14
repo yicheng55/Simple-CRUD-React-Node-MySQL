@@ -14,6 +14,7 @@ const AppToaster = Toaster.create({
 
 function App() {
   const [employees, setEmployees] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [newName, setNewName] = useState("");
   const [newDepartment, setNewDepartment] = useState("");
@@ -31,7 +32,7 @@ function App() {
         return {id: list.ID, name: list.NAME};
       });
       console.log(resoult);
-      setDepartments(resoult);
+      setLocations(resoult);
     })
     .catch((error) => {
       console.error("Error", error);
@@ -45,7 +46,7 @@ function App() {
       // console.log(data.data);
       let resoult = data.data.map(function(list, index, array){
         // console.log(list);
-        return {id: list.ID, name: list.USER_ID, department: list.ITEM_ID, address: list.TYPE};
+        return {id: list.ID, name: list.USER_ID, location: list.LOCATION_ID, type: list.TYPE};
       });
       console.log(resoult);
       setEmployees(resoult);
@@ -122,19 +123,19 @@ function App() {
           <tr>
             <th>ID</th>
             <th>User</th>
-            <th>Department</th>
-            <th>Address</th>
+            <th>Location</th>
+            <th>Type</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {employees.map((employee) => {
-            const { id, name, address, department } = employee;
+            const { id, name, type, location } = employee;
             // 部門代號id轉為部門名稱顯示.
-            let filtered = departments.filter(function(elem, index, arr) {
-              return elem.id === department;
+            let filtered = locations.filter(function(elem, index, arr) {
+              return elem.id === location;
             });
-            // console.log(department);
+            // console.log(location);
             console.log(filtered);
             return (
               <tr key={id}>
@@ -143,7 +144,7 @@ function App() {
                 <td>{filtered[0].name}</td>
                 <td>
                   <EditableText
-                    value={address}
+                    value={type}
                     onChange={(value) => onChangeHandler(id, "address", value)}
                   />
                 </td>
