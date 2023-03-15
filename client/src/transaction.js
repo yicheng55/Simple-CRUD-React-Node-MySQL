@@ -235,7 +235,7 @@ function App() {
                   value={newDepartment}
                 >
                   <option defaultValue ="none">
-                    Select department
+                    Select location
                   </option>
                   {locations.map((location) => {
 
