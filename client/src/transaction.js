@@ -62,23 +62,30 @@ function App() {
   }, []);
 
   const addEmployee = () => {
-    const name = newName.trim();
-    const department = newDepartment;
-    const address = newAddress.trim();
-    if (name && department && address) {
+
+    const newParams = {
+      USER_ID : newName.trim(),
+      ITEM_ID : newName.trim(),
+      TYPE    : newName.trim(),
+      QUANTITY : newName.trim(),
+      TAG_ID : newName.trim(),
+      LOCATION_ID : newDepartment,
+      DEVICE_ID : newName.trim(),
+      PHYSICAL_PORT : newName.trim(),
+      COMMENT : newAddress.trim(),
+    }
+
+    if (newParams) {
+      console.log(newParams);
       axios
-        .post("http://localhost:3001/create", {
-          name,
-          department,
-          address,
-        })
+        .post("http://localhost:3001/catalog/transaction", newParams)
         .then((response) => {
           const { data } = response;
           // console.log(response.data);
           // console.log(JSON.parse(JSON.stringify(data)));
           // let data1 = JSON.parse(JSON.stringify(data));
-          console.log(data);
-          setEmployees([...employees, data]);
+          console.log(data.data[0]);
+          setEmployees([...employees, data.data[0]]);
           setNewName("");
           setNewAddress("");
           setNewDepartment("");
