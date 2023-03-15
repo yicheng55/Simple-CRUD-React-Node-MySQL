@@ -81,14 +81,27 @@ function App() {
         .post("http://localhost:3001/catalog/transaction", newParams)
         .then((response) => {
           const { data } = response;
-          // console.log(response.data);
-          // console.log(JSON.parse(JSON.stringify(data)));
-          // let data1 = JSON.parse(JSON.stringify(data));
-          console.log(data.data[0]);
-          setEmployees([...employees, data.data[0]]);
-          setNewName("");
-          setNewAddress("");
-          setNewDepartment("");
+          console.log(response.data);
+          // console.log(data.data);
+          // console.log(data.msg);
+
+          // 讀取新增資料顯示於UI
+          axios
+          .get(`http://localhost:3001/catalog/transaction/${data.data.insertId}`, newParams)
+          .then((response) => {
+            const { data } = response;
+            console.log(response.data);
+            console.log(data.data);
+            // console.log(data.msg);
+            setEmployees([...employees, data.data[0]]);
+            setNewName("");
+            setNewAddress("");
+            setNewDepartment("");
+          });
+
+        })
+        .catch((error) => {
+          console.error("Error", error);
         });
     }
   };
