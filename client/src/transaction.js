@@ -87,7 +87,7 @@ function App() {
 
           // 讀取新增資料顯示於UI
           axios
-          .get(`http://localhost:3001/catalog/transaction/${data.data.insertId}`, newParams)
+          .get(`http://localhost:3001/catalog/transaction/${data.data[0].insertId}`, newParams)
           .then((response) => {
             const { data } = response;
             console.log(response.data);
