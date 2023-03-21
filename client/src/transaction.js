@@ -12,6 +12,9 @@ const AppToaster = Toaster.create({
   position: Position.TOP,
 });
 
+// let  urlpath = "http://localhost:3001";
+let  urlpath = "http://192.168.248.34:3001";
+
 function App() {
   const [employees, setEmployees] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -22,7 +25,9 @@ function App() {
 
   console.log( __filename );
   useEffect(() => {
-    let url = "http://localhost:3001/catalog/location";
+    // let url = `http://localhost:3001/catalog/location`;
+    let url = `${urlpath}/catalog/location`;
+    console.log(url);
     axios.get(url)
     .then((response) => {
       const { data } = response;
@@ -41,23 +46,24 @@ function App() {
     });
 
     // axios.get("http://localhost:3001/catalog/transaction")
-    url = "http://localhost:3001/catalog/transaction";
+    // url = "http://localhost:3001/catalog/transaction";
+    url = `${urlpath}/catalog/transaction`;
     axios.get(url)
-    .then((response) => {
-      const { data } = response;
-      // console.log(data.data);
-      let resoult = data.data.map(function(list, index, array){
-        // console.log(list);
-        return list;
-        // 依據UI需要轉換欄位名稱
-        // return {id: list.ID, name: list.USER_ID, location: list.LOCATION_ID, type: list.TYPE};
+      .then((response) => {
+        const { data } = response;
+        // console.log(data.data);
+        let resoult = data.data.map(function(list, index, array){
+          // console.log(list);
+          return list;
+          // 依據UI需要轉換欄位名稱
+          // return {id: list.ID, name: list.USER_ID, location: list.LOCATION_ID, type: list.TYPE};
+        });
+        console.log(resoult);
+        setEmployees(resoult);
+      })
+      .catch((error) => {
+        console.error("Error", error);
       });
-      console.log(resoult);
-      setEmployees(resoult);
-    })
-    .catch((error) => {
-      console.error("Error", error);
-    });
 
   }, []);
 
@@ -77,8 +83,11 @@ function App() {
 
     if (newParams) {
       console.log(newParams);
-      axios
-        .post("http://localhost:3001/catalog/transaction", newParams)
+      let url = `${urlpath}/catalog/transaction`;
+      console.log(url);
+
+      // axios.post("http://localhost:3001/catalog/transaction", newParams)
+      axios.post(url, newParams)
         .then((response) => {
           const { data } = response;
           console.log(response.data);
@@ -86,18 +95,17 @@ function App() {
           // console.log(data.msg);
 
           // 讀取新增資料顯示於UI
-          axios
-          .get(`http://localhost:3001/catalog/transaction/${data.data[0].insertId}`, newParams)
-          .then((response) => {
-            const { data } = response;
-            console.log(response.data);
-            console.log(data.data);
-            // console.log(data.msg);
-            setEmployees([...employees, data.data[0]]);
-            setNewName("");
-            setNewAddress("");
-            setNewDepartment("");
-          });
+          axios.get(`${url}/${data.data[0].insertId}`, newParams)
+            .then((response) => {
+              const { data } = response;
+              console.log(response.data);
+              console.log(data.data);
+              // console.log(data.msg);
+              setEmployees([...employees, data.data[0]]);
+              setNewName("");
+              setNewAddress("");
+              setNewDepartment("");
+            });
 
         })
         .catch((error) => {
@@ -122,7 +130,9 @@ function App() {
   const updateAddress = (id) => {
     const data = employees.find((item) => item.ID === id);
     console.log(data);
-    axios.put(`http://localhost:3001/catalog/transaction/${id}`, data).then((response) => {
+    let url = `${urlpath}/catalog/transaction`;
+    console.log(url);
+    axios.put(`${url}/${id}`, data).then((response) => {
       AppToaster.show({
         message: "Data updated successfully",
         intent: "success",
@@ -132,7 +142,9 @@ function App() {
   };
 
   const deleteEmployee = (id) => {
-    axios.delete(`http://localhost:3001/catalog/transaction/${id}`).then((response) => {
+    let url = `${urlpath}/catalog/transaction`;
+    console.log(url);
+    axios.delete(`${url}/${id}`).then((response) => {
       setEmployees((values) => {
         return values.filter((item) => item.ID !== id);
       });
