@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const columns = [
@@ -38,11 +39,41 @@ const rows = [
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
+let  urlpath = "http://192.168.248.34:3001";
+
 export default function DataTable() {
+  const [locations, setLocations] = useState([]);
+  console.log( __filename );
+
+  useEffect(() => {
+    let url = `${urlpath}/catalog/location`;
+    console.log(url);
+    axios.get(url)
+    .then((response) => {
+      const { data } = response;
+      // console.log(data.data);
+      let resoult = data.data.map(function(list, index, array){
+        // console.log(list);
+        // return list;
+        // 依據UI需要轉換欄位名稱
+        return {id: list.ID, lastName: list.NAME, firstName: list.FULL_NAME, age: list.TYPE};
+      });
+      console.log(resoult);
+      setLocations(resoult);
+      // setLocations(rows);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
+
+  }, []);
+
+
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={locations}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
