@@ -1,3 +1,4 @@
+'use strict';
 import "./App.css";
 import { useState } from "react";
 import Axios from "axios";
