@@ -39,7 +39,7 @@ const rows = [
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
-let  urlpath = "http://192.168.248.34:3001";
+let  urlpath = "http://127.0.0.1:3001";
 
 export default function DataTable() {
   const [locations, setLocations] = useState([]);
